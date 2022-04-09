@@ -59,24 +59,38 @@ export default function HeaderBar(){
 
 	window.ethereum.on('chainChanged', chainChangedHandler);
 
+	getClientData();
     // console.log(defaultAccount);
     // console.log(userBalance);
     async function getClientData() {
-        const response = await fetch('http://localhost:8080/clientData', {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
+    //     const response = await fetch('http://localhost:8080/clientData', {
+    //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    //     mode: 'cors', // no-cors, *cors, same-origin
+    //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    //     credentials: 'same-origin', // include, *same-origin, omit
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(defaultAccount) // body data type must match "Content-Type" header
+    //   });
+    //   const data = await response.json();
+    //   console.log(data);
+	axios.post('http://localhost:8080/clientData',{'clientWadress': defaultAccount},
+      {
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(defaultAccount) // body data type must match "Content-Type" header
-      });
-      const data = await response.json();
-      console.log(data);
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    .then(response => {
+      console.log(response.data.apiStatus);
+    })
+    .catch(err => {
+      console.log(err, err.response);
+    });
     }
 
-    // getClientData();
+
     // axios.get('http://localhost:8080/clientData', defaultAccount)
     // .then((res) => {
     //     console.log(res.data)
