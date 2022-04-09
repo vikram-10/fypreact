@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300&display=swap');
+.bodyHeader{
+    font-family: 'Poppins', sans-serif;
+    margin-top: 9%;
+    text-align: center;
+    font-size: 350%;
+}
+
+.bodyContent{
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 120%;
+    margin-top: 20%;
+    text-align: center;
+}
