@@ -7,6 +7,7 @@ router.use(cors({
     origin: '*'
 }));
 let db;
+let flag=0;
 
 const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
@@ -19,40 +20,26 @@ router.post('/', async function(req, res, next) {
         let client=await mongoClient.connect(uri);
         let db=client.db('healthchain');
         let regUserData=await db.collection("registeredUsers").find({}).toArray();
-        console.log(regUserData);
+        regUserData.forEach(function(user){
+            let dbWadress=user.wadress;
+            let lowercaseWadress=dbWadress.toLowerCase();
+            if(lowercaseWadress==walletAdress){
+               console.log("user found");
+               res.send({
+                "apiStatus":1
+                });
+            }
+            else{
+                console.log("user not found");
+                res.send({
+                    "apiStatus":0
+                });
+            }
+        });
     }
     catch(err){
         console.log(err);
     }
-    // console.log(walletAdress);
-//     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-// client.connect(err => {
-//   const collectionDb = client.db("healthchain");
-//   const collectionData=collectionDb.collection("registeredUsers");
-//   collectionData.findOne({wadress:walletAdress},function(err, result) {
-//       console.log(result);
-//   });
-//   client.close();
-// });
-//     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-//     client.connect(err => {
-//         console.log("Client Connected! ");
-//         const collection = client.db("healthchain").collection("registeredUsers");
-//     collection.findOne({'wadress':walletAdress}).then(function(doc){
-//         if(doc){
-//             console.log("1");
-//             res.send({
-//                 "apiStatus":1,
-//             });
-//         }
-//         else{
-//             console.log("0");
-//             res.send({
-//                 "apiStatus":0,
-//             });
-//         }
-//     });
-// });
 });
 
 module.exports = router;

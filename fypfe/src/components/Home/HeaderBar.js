@@ -1,10 +1,13 @@
 import './HeaderBar.css';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate} from 'react-router-dom';
 import React, {useState} from 'react';
 import {ethers} from 'ethers';
 import axios from 'axios';
 
+let apiStatus=0;
+
 export default function HeaderBar(){
+  const navigate =useNavigate();
     const [errorMessage, setErrorMessage] = useState(null);
 	const [defaultAccount, setDefaultAccount] = useState({});
 	const [userBalance, setUserBalance] = useState(null);
@@ -29,6 +32,12 @@ export default function HeaderBar(){
 			console.log('Need to install MetaMask');
 			setErrorMessage('Please install MetaMask browser extension to interact');
 		}
+    if(apiStatus==1){
+        navigate('/dashboard');
+    }
+    else{
+        navigate('/register');
+    }
 	}
 
     // update account, will cause component re-render
@@ -63,18 +72,6 @@ export default function HeaderBar(){
     // console.log(defaultAccount);
     // console.log(userBalance);
     async function getClientData() {
-    //     const response = await fetch('http://localhost:8080/clientData', {
-    //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    //     mode: 'cors', // no-cors, *cors, same-origin
-    //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    //     credentials: 'same-origin', // include, *same-origin, omit
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(defaultAccount) // body data type must match "Content-Type" header
-    //   });
-    //   const data = await response.json();
-    //   console.log(data);
 	axios.post('http://localhost:8080/clientData',{'clientWadress': defaultAccount},
       {
         headers: {
@@ -84,6 +81,7 @@ export default function HeaderBar(){
     )
     .then(response => {
       console.log(response.data.apiStatus);
+      apiStatus=response.data.apiStatus;
     })
     .catch(err => {
       console.log(err, err.response);
