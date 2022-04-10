@@ -6,7 +6,6 @@ function Registerpage(){
 async function sendData(event){
   event.preventDefault();
 
-
   let userData={
     "name":document.getElementById("userName").value,
     "wadress":document.getElementById('inputName').value,
@@ -16,19 +15,19 @@ async function sendData(event){
 
 console.log(userData.name);
 
-// 	axios.post('http://localhost:8080/reguser',userData,
-// {
-//         headers: {
-//           'Content-Type': 'application/json'
-//         }
-//       }
-//     )
-//     .then(response => {
-//       console.log(response.data);
-//     })
-//     .catch(err => {
-//       console.log(err, err.response);
-//     });
+	axios.post('http://localhost:8080/reguser',userData,
+{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(err => {
+      console.log(err, err.response);
+    });
 }
 
 let userWallet=sessionStorage.getItem('walletAdress');
