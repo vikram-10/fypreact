@@ -3,6 +3,7 @@ var router = express.Router();
 const mongo = require('mongodb');
 let mongoClient = mongo.MongoClient;
 let cors=require('cors');
+const { use } = require('express/lib/application');
 router.use(cors({
     origin: '*'
 }));
@@ -17,12 +18,14 @@ router.post('/', async function(req, res, next) {
     try{
         let userWallet=req.body.clientWadress;
         let walletAdress=userWallet.wadress;
+        console.log("User Wallet:"+walletAdress);
         let client=await mongoClient.connect(uri);
         let db=client.db('healthchain');
         let regUserData=await db.collection("registeredUsers").find({}).toArray();
         regUserData.forEach(function(user){
             let dbWadress=user.wadress;
             let lowercaseWadress=dbWadress.toLowerCase();
+            console.log("DB Wallet:"+lowercaseWadress);
             if(lowercaseWadress==walletAdress){
                console.log("user found");
                res.send({
@@ -36,6 +39,7 @@ router.post('/', async function(req, res, next) {
                 });
             }
         });
+        client.close();
     }
     catch(err){
         console.log(err);

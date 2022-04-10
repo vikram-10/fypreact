@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {ethers} from 'ethers';
 import axios from 'axios';
 
-let apiStatus=0;
+let apiStatus;
 
 export default function HeaderBar(){
   const navigate =useNavigate();
@@ -32,18 +32,17 @@ export default function HeaderBar(){
 			console.log('Need to install MetaMask');
 			setErrorMessage('Please install MetaMask browser extension to interact');
 		}
-    if(apiStatus==1){
-        navigate('/dashboard');
-    }
-    else{
-        navigate('/register');
-    }
+    // if(apiStatus==1){
+    //     navigate('/dashboard');
+    // }
+    // else{
+    //     navigate('/register');
+    // }
 	}
-
+	
     // update account, will cause component re-render
 	const accountChangedHandler = (newAccount) => {
 		setDefaultAccount({'wadress':newAccount});
-        getClientData();
 		getAccountBalance(newAccount.toString());
 	}
 
@@ -69,8 +68,7 @@ export default function HeaderBar(){
 	window.ethereum.on('chainChanged', chainChangedHandler);
 
 	getClientData();
-    // console.log(defaultAccount);
-    // console.log(userBalance);
+	sessionStorage.setItem("walletAdress",defaultAccount.wadress);
     async function getClientData() {
 	axios.post('http://localhost:8080/clientData',{'clientWadress': defaultAccount},
       {
@@ -87,14 +85,6 @@ export default function HeaderBar(){
       console.log(err, err.response);
     });
     }
-
-
-    // axios.get('http://localhost:8080/clientData', defaultAccount)
-    // .then((res) => {
-    //     console.log(res.data)
-    // }).catch((error) => {
-    //     console.log(error)
-    // });
 
     return(
 <>

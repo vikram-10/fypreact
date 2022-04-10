@@ -1,0 +1,17 @@
+.cardDesign{
+    margin-top: 5%;
+    margin-left: 25%;
+    width: 50%;
+    border-radius: 10px;
+    height: 400px;
+    color: black !important;
+}
+
+.cardTitleDesign{
+    text-align: center;
+    font-size: 30px;
+}
+
+.formDesign{
+    margin-top: 30px;
+}
