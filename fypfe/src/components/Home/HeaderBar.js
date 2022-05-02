@@ -22,6 +22,7 @@ export default function HeaderBar(){
 				accountChangedHandler(result[0]);
 				setConnButtonText('Wallet Connected');
 				getAccountBalance(result[0]);
+
 			})
 			.catch(error => {
 				setErrorMessage(error.message);
@@ -32,12 +33,7 @@ export default function HeaderBar(){
 			console.log('Need to install MetaMask');
 			setErrorMessage('Please install MetaMask browser extension to interact');
 		}
-    // if(apiStatus==1){
-    //     navigate('/dashboard');
-    // }
-    // else{
-    //     navigate('/register');
-    // }
+
 	}
 	
     // update account, will cause component re-render
@@ -80,6 +76,12 @@ export default function HeaderBar(){
     .then(response => {
       console.log(response.data.apiStatus);
       apiStatus=response.data.apiStatus;
+	//   if(apiStatus==1){
+	// 	navigate('/dashboard');
+	// }
+	// else{
+	// 	navigate('/register');
+	// }
     })
     .catch(err => {
       console.log(err, err.response);

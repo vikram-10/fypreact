@@ -3,43 +3,36 @@ import axios from 'axios';
 
 function Registerpage(){
   
-async function sendData(event){
-  event.preventDefault();
-
+async function sendData(){
   let userData={
-    "name":document.getElementById("userName").value,
-    "wadress":document.getElementById('inputName').value,
+    "name":document.getElementById("inputName").value,
+    "wadress":userWallet,
     "userType":document.getElementById('userType').value
-
-}
-
-console.log(userData.name);
-
-//add
+      }
 
 	axios.post('http://localhost:8080/reguser',userData,
 {
-        headers: {
+  headers: {
           'Content-Type': 'application/json'
-        }
-      }
-    )
-    .then(response => {
+            }
+}).then(response => {
       console.log(response.data);
-    })
-    .catch(err => {
+    }).catch(err => {
       console.log(err, err.response);
     });
+
 }
 
 let userWallet=sessionStorage.getItem('walletAdress');
 console.log(userWallet);
+
+
 return(
         <>
 <div className="card cardDesign">
   <div className="card-body">
     <h6 className="card-subtitle mb-2 text-muted cardTitleDesign">User Registration</h6>
-    <form className='formDesign' onSubmit={sendData()} method="post">
+    <form className='formDesign'>
   <div class="form-group row">
     <div class="col-sm-12">
     <label for="exampleInputEmail1">Your Wallet Address:</label>
@@ -55,10 +48,10 @@ return(
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-2 col-form-label"></label>
     <div class="col-sm-12">
-      <input type="text" class="form-control" id="inputType" name='userType' placeholder="Doctor/User" />
+      <input type="text" class="form-control" id="userType" placeholder="Doctor/User" />
     </div>
   </div>
-  <button type="button" class="btn btn-success">SUBMIT</button>
+  <button type="submit"  onClick={(e)=>{e.preventDefault(); sendData();}} class="btn btn-success">SUBMIT</button>
     </form>
   </div>
 </div>
