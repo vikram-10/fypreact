@@ -9,7 +9,9 @@ import Testpage from './components/Testing/Testpage';
 import Registerpage from './components/Register/Registerpage';
 import Dashboard from './components/Dashboard/Dashboardpage';
 import ProtectedRoute from './components/Items/ProtectedRoute';
-import sendImage from './components/Sendimage/sendImage';
+import SendImage from './components/Sendimage/SendImage';
+import RecieveImage from './components/RecieveImage/RecieveImage';
+import Requests from './components/Requests/Requests';
 
 
 
@@ -23,7 +25,9 @@ function App() {
         <Route path="test" element={ <Testpage/> } />
         <Route path="/register" element={ <Registerpage/> } />
         <Route path='/dashboard' element={ <Dashboard/> } />
-        <Route path='dashboard/send-image' element={ <sendImage/> } />
+        <Route path='dashboard/requests' element={ <Requests/> } />
+        <Route path='dashboard/send-image' element={ <SendImage/> } />
+        <Route path='dashboard/recieved-images' element={ <RecieveImage/> } />
         {/* <ProtectedRoute path="/dashboard" component={Dashboard} auth={false}/> */}
       </Routes>
     </div>      

@@ -33,7 +33,7 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List className='drawerListCollection'>
-        {['send-image', 'recieve-image','requests'].map((text, index) => (
+        {['dashboard','send-image', 'recieved-images','requests'].map((text, index) => (
           <ListItem button key={text} className="drawerListItem">
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
