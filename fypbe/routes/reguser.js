@@ -32,6 +32,7 @@ router.post('/', async function(req, res, next) {
         let regUserData=await db.collection("userInfo").insertOne(req.body)
         fs.writeFileSync("./private.key", privateKeyArmored);
         console.log("Inserted sucessfully!");
+        res.download('./private.key');
         client.close();
     }
     catch(err){
