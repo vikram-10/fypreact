@@ -1,16 +1,25 @@
 import './sendImage.css';
 import Drawer from '../Items/Drawer';
+import axios from 'axios';
 
 export default function SendImage(){
 
-  var state = { selectedFile: null }
+  function uploadImage(e,method){
+   let imageObj={};
 
-  function fileChangedHandler(event) {
-    this.setState({ selectedFile: event.target.files[0] })
-  }
-  
-  function uploadHandler(){
-    console.log(this.state.selectedFile)
+     let imageFormObj=new FormData();
+
+     imageFormObj.append("imageName","multer-image-"+Date.now());
+      imageFormObj.append("imageData",e.target.files[0]);
+      console.log(e.target.files[0]);
+      
+      axios.post('http://localhost:8080/sendimg',imageFormObj)
+      .then(response=>{
+        console.log("Post Request sent!");
+        if(response.data.success){
+          alert("Image Uploaded Successfully using multer");
+        }
+      });
   }
 
     let userWallet=sessionStorage.getItem('walletAdress');
@@ -40,11 +49,11 @@ console.log(userWallet);
   <label for="exampleInputEmail1">Image Upload</label>
     <label for="inputPassword" class="col-sm-2 col-form-label"></label>
     <div class="col-sm-12">
-      <input type="file" id="userType" onChange={(e)=>fileChangedHandler(e)} />
+      <input type="file" id="userType" name="imageData" onChange={(e)=>uploadImage(e)}/>
     </div>
   </div>
   <br/>
-  <button type="submit" class="btn btn-success" onClick={uploadHandler}>SUBMIT</button>
+  <button type="submit" class="btn btn-success">SUBMIT</button>
     </form>
   </div>
 </div>

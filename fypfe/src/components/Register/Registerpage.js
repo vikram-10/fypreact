@@ -32,6 +32,7 @@ async function sendData(){
       
       // Start file download.
       download("private.key",response.data);
+      alert("Inserted Successfully");
     }).catch(err => {
       console.log(err, err.response);
     });
