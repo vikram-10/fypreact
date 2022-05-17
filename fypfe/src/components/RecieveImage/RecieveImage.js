@@ -1,13 +1,13 @@
 import './recieveimage.css';
 import Drawer from '../Items/Drawer';
-import DataTable from '../Items/Datatable';
+import RecievedImagetable from './RecievedImagetable';
 
 export default function RecieveImage(){
     return(
         <>
         <Drawer/>
         <div className='dataTableSizer'>
-        <DataTable/>
+        <RecievedImagetable/>
         </div>
         </>
     )

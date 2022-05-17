@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+opencv-python
+Pillow
+scipy
+tqdm
+scikit-image
+tensorflow
+easyocr

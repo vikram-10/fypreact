@@ -22,23 +22,27 @@ router.post('/', async function(req, res, next) {
         let client=await mongoClient.connect(uri);
         let db=client.db('healthchain');
         let regUserData=await db.collection("registeredUsers").find({}).toArray();
-        regUserData.forEach(function(user){
+        console.log(regUserData);
+        let auth = false;
+        regUserData.every(function(user){
             let dbWadress=user.wadress;
             let lowercaseWadress=dbWadress.toLowerCase();
             console.log("DB Wallet:"+lowercaseWadress);
             if(lowercaseWadress==walletAdress){
-               console.log("user found");
-               res.send({
-                "apiStatus":1
-                });
-            }
-            else{
-                console.log("user not found");
-                res.send({
-                    "apiStatus":0
-                });
+               auth = true;
+               return;
             }
         });
+        if(auth){
+            res.send({
+                "apiStatus": 1,
+            });
+        }
+        else{
+            res.send({
+                "apiStatus": 0,
+            });
+        }
         client.close();
     }
     catch(err){
