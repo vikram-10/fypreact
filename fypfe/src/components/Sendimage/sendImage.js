@@ -4,7 +4,14 @@ import axios from 'axios';
 
 export default function SendImage(){
 
-  function uploadImage(e,method){
+  function submitImage(e){
+    axios.post('http://localhost:8080/gg')
+    .then(response=>{
+      console.log(response);
+    });
+  }
+
+  function uploadImage(e){
    let imageObj={};
 
      let imageFormObj=new FormData();
@@ -15,10 +22,7 @@ export default function SendImage(){
       
       axios.post('http://localhost:8080/sendimg',imageFormObj)
       .then(response=>{
-        console.log("Post Request sent!");
-        if(response.data.success){
-          alert("Image Uploaded Successfully using multer");
-        }
+        console.log(response);
       });
   }
 
@@ -53,7 +57,7 @@ console.log(userWallet);
     </div>
   </div>
   <br/>
-  <button type="submit" class="btn btn-success">SUBMIT</button>
+  <button type="submit" class="btn btn-success" onSubmit={(e)=>submitImage(e)}>SUBMIT</button>
     </form>
   </div>
 </div>
