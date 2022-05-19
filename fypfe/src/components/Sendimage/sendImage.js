@@ -25,7 +25,9 @@ export default function SendImage(){
       imageFormObj.append("imageData",e.target.files[0]);
       imageFormObj.append("recwadress",document.getElementById('recwadress').value);
       console.log(e.target.files[0]);
-      axios.post('http://localhost:8080/sendimg',imageFormObj);
+      axios.post('http://localhost:8080/sendimg',imageFormObj).then(response=>{
+            console.log(response.data);
+          });
   }
 
     let userWallet=sessionStorage.getItem('walletAdress');
