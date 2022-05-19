@@ -11,7 +11,6 @@ var usersRouter = require('./routes/users');
 var clientDataRouter = require('./routes/clientdata');
 var reguser=require('./routes/reguser');
 var sendimg=require('./routes/sendimg');
-var gg=require('./routes/gg');
 
 var app = express();
 
@@ -32,7 +31,6 @@ app.use('/clientdata', clientDataRouter);
 app.use('/reguser', reguser);
 app.use('/sendimg', sendimg);
 app.use('/uploads', express.static('uploads'));
-app.use('/gg', gg);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

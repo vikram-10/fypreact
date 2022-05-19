@@ -40,3 +40,4 @@ secret_img[0] = arr
 plt.imsave("testStego.JPG",stego_img[0])
 plt.imsave("testSecret.JPG",secret_img[0])
 
+
