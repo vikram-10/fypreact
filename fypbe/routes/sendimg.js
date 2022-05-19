@@ -3,10 +3,12 @@ const multer = require('multer');
 const fs = require("fs");
 var router = express.Router();
 const openpgp = require('openpgp');
+const ipfsAPI = require('ipfs-api');
 const mongo = require('mongodb');
 let mongoClient = mongo.MongoClient;
 let cors=require('cors');
 
+const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 const storage=multer.diskStorage({
@@ -26,7 +28,7 @@ router.post('/',  upload.single('imageData'),async(req, res, next) =>{
   try{
     var spawn = require('child_process').spawn;
     console.log("../uploads/"+ req.file.originalname)
-      
+     //add random cover 
       var process =await spawn("python", [
         "test.py",
         "uploads/"+req.file.originalname,
@@ -39,23 +41,32 @@ router.post('/',  upload.single('imageData'),async(req, res, next) =>{
         let client=await mongoClient.connect(uri);
           let db=client.db('healthchain');
           let regUserData=await db.collection("userInfo").find({wadress:recwadress}).toArray();
-          console.log(regUserData[0].pubkey);
+          var publicKey = Buffer.from(regUserData[0].pubkey, 'utf-8').toString();
+          (async () => {
+            const plainData = fs.readFileSync('testStego.JPG','base64');
+            const imageData = Buffer.from(plainData,'base64');
+            const encrypted = await openpgp.encrypt({
+              message: openpgp.message.fromText(imageData),
+              publicKeys: (await openpgp.key.readArmored(publicKey)).keys
+            });
+            // fs.writeFileSync('encrypted-secret.txt', encrypted.data);
+            ipfs.files.add(Buffer.from(encrypted.data), function (err, file) {
+              if (err) {
+                console.log(err);
+              }
+              res.send({
+                hash:file[0].hash,
+                recwadress:recwadress
+              });
+            })
+          })();
       });
 
       // const publicKeyArmored = fs.readFileSync('./public.key', {
       //   encoding: 'utf8',
       //   flag: 'r'
       // });
-      // (async () => {
-      //   const plainData = fs.readFileSync('picture.png');
-      //   const imageData = new Buffer(plainData).toString('base64');
-      //   const encrypted = await openpgp.encrypt({
-      //     message: openpgp.message.fromText(imageData),
-      //     publicKeys: (await openpgp.key.readArmored(publicKeyArmored)).keys
-      //   });
-      //   fs.writeFileSync('encrypted-secret.txt', encrypted.data);
-      //   console.log(`Image is Encrypted`);
-      // })();
+
   
   
 
