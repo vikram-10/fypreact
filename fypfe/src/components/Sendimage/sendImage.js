@@ -19,7 +19,6 @@ export default function SendImage(){
 
   function uploadImage(e){
    let imageObj={};
-
      let imageFormObj=new FormData();
      imageFormObj.append("imageName","multer-image-"+Date.now());
       imageFormObj.append("imageData",e.target.files[0]);

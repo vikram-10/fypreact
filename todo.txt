@@ -1,0 +1,9 @@
+Keygen-done
+Image upload
+Child Spawn Process
+Asymmetric Encryption (base64)
+Send encrypted base64 to user (.txt file)
+Load base64 file on IPFS -ajay
+Store on blockchain -ajay
+
+ 

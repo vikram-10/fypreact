@@ -19,17 +19,43 @@ export default function HeaderBar(){
 
 			window.ethereum.request({ method: 'eth_requestAccounts'})
 			.then(result => {
+
 				accountChangedHandler(result[0]);
 				setConnButtonText('Wallet Connected');
 				getAccountBalance(result[0]);
-
+				sessionStorage.setItem("walletAdress",result[0]);
+				axios.post('http://localhost:8080/clientData',{'clientWadress': result[0]},
+				{
+				headers: {
+					'Content-Type': 'application/json'
+				}
+				}
+			    ) 
+			    .then(response => {
+				 console.log(response.data.apiStatus);
+				 apiStatus=response.data.apiStatus;
+				  if(apiStatus == 1){
+					navigate('/dashboard');
+				}
+				else{
+					navigate('/register');
+				}
 			})
+			.catch(err => {
+				console.log(err, err.response);
+			});
+			}
+		)
 			.catch(error => {
 				setErrorMessage(error.message);
 			
 			});
 
-		} else {
+
+			//getClientData();
+
+		}
+		else {
 			console.log('Need to install MetaMask');
 			setErrorMessage('Please install MetaMask browser extension to interact');
 		}
@@ -60,33 +86,7 @@ export default function HeaderBar(){
 
 	// listen for account changes
 	window.ethereum.on('accountsChanged', accountChangedHandler);
-
 	window.ethereum.on('chainChanged', chainChangedHandler);
-
-	getClientData();
-	sessionStorage.setItem("walletAdress",defaultAccount.wadress);
-    async function getClientData() {
-	axios.post('http://localhost:8080/clientData',{'clientWadress': defaultAccount},
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-    .then(response => {
-      console.log(response.data.apiStatus);
-      apiStatus=response.data.apiStatus;
-	//   if(apiStatus==1){
-	// 	navigate('/dashboard');
-	// }
-	// else{
-	// 	navigate('/register');
-	// }
-    })
-    .catch(err => {
-      console.log(err, err.response);
-    });
-    }
 
     return(
 <>
