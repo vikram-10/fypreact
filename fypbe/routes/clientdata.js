@@ -13,7 +13,6 @@ let flag=0;
 const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 
-/* GET home page. */
 router.post('/', async function(req, res, next) {
     try{
         let userWallet=req.body.clientWadress;

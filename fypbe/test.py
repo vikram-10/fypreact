@@ -37,7 +37,7 @@ arr [arr < 0] = 0
 arr [arr > 1] = 1
 secret_img[0] = arr
 
-plt.imsave("testStego.JPG",stego_img[0])
-plt.imsave("testSecret.JPG",secret_img[0])
+plt.imsave("testStego.jpeg",stego_img[0])
+plt.imsave("testSecret.jpeg",secret_img[0])
 
 

@@ -11,6 +11,7 @@ var usersRouter = require('./routes/users');
 var clientDataRouter = require('./routes/clientdata');
 var reguser=require('./routes/reguser');
 var sendimg=require('./routes/sendimg');
+var userInfo=require('./routes/userinfo');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/users', usersRouter);
 app.use('/clientdata', clientDataRouter);
 app.use('/reguser', reguser);
 app.use('/sendimg', sendimg);
+app.use('/userinfo', userInfo);
 app.use('/uploads', express.static('uploads'));
 
 // catch 404 and forward to error handler
