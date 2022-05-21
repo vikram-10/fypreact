@@ -3,8 +3,8 @@
 const status = document.getElementById('status');
 status.innerText = 'Loaded TensorFlow.js - version: ' + tf.version.tfjs;
 
-const MODEL_URL_1 = "model.json";
-const MODEL_URL_2 = "modelq.json";
+const MODEL_URL_1 = "modelEncrypter.json";
+const MODEL_URL_2 = "modelDecrypter.json";
 // Specify a test value we wish to use in our prediction.
 // Here we use 950, so we expect the result to be close to 950,000.
 const TEST_VALUE = 950.0
