@@ -6,14 +6,16 @@ import * as tf from "@tensorflow/tfjs";
 
 
 export default function SendImage(){
-
-
+  
+    
+  let gantTensor1 = null;
+  let gantTensor2 = null;
   async function encode(){
     const MODEL_URL_1 = "http://127.0.0.1:8081/modelEncrypter.json";
-    const gantImage1 = document.getElementById('gant1');
-    const gantImage2= document.getElementById('gant2');
-    let gantTensor1 = tf.image.resizeBilinear(tf.browser.fromPixels(gantImage1).div(255.0), [64,64]);
-    let gantTensor2 = tf.image.resizeBilinear(tf.browser.fromPixels(gantImage2).div(255.0), [64,64]);
+
+    gantTensor1 = tf.image.resizeBilinear(gantTensor1.div(255.0), [64,64]);
+    gantTensor2 = tf.image.resizeBilinear(gantTensor2.div(255.0), [64,64]);
+
     try{
     const model = await tf.loadLayersModel(MODEL_URL_1);
     let val = model.predict([gantTensor1.reshape([1,64,64,3]),gantTensor2.reshape([1,64,64,3])]);
@@ -31,9 +33,35 @@ export default function SendImage(){
     
     //send b64 to server
 
-
   }
 
+
+  function uploadCover(e){
+    const im = new Image()
+    var fr = new FileReader();
+    fr.onload = function () {
+        im.src = fr.result;
+    }
+    fr.readAsDataURL(e.target.files[0]);
+    im.onload = () => {
+      gantTensor1= tf.browser.fromPixels(im);
+    }
+  }
+
+  function uploadSecret(e){
+
+    const im = new Image()
+    var fr = new FileReader();
+    fr.onload = function () {
+        im.src = fr.result;
+    }
+    fr.readAsDataURL(e.target.files[0]);
+    im.onload = () => {
+      gantTensor2= tf.browser.fromPixels(im);
+      encode();
+    }
+
+  }
   function uploadImage(e){
    encode();
   //  let imageObj={};
@@ -48,8 +76,6 @@ export default function SendImage(){
   }
 
     let userWallet=sessionStorage.getItem('walletAdress');
-    console.log(userWallet);
-
 
     return(
         <>
@@ -74,7 +100,8 @@ export default function SendImage(){
   <label for="exampleInputEmail1">Image Upload</label>
     <label for="inputPassword" class="col-sm-2 col-form-label"></label>
     <div class="col-sm-12">
-      <input type="file" id="userType" name="imageData" onChange={(e)=>uploadImage(e)}/>
+      <input type="file" name="coverImg" onChange={(e)=>uploadCover(e)}/>
+      <input type="file" name="secretImg" onChange={(e)=>uploadSecret(e)}/>
     </div>
   
   </div>
@@ -88,3 +115,4 @@ export default function SendImage(){
         </>
     )
 }
+
