@@ -14,7 +14,6 @@ def reveal_loss(secret, secret_prime):
 encrypter = keras.models.load_model("encrypter_600.h5")
 decrypter = keras.models.load_model("decrypter_600.h5", custom_objects={"reveal_loss":reveal_loss})
 
-print(sys.argv[1],sys.argv[2])
 
 img_s = keras.preprocessing.image.load_img(sys.argv[1], grayscale=False, color_mode="rgb",target_size=(64,64), interpolation="nearest")
 img_c = keras.preprocessing.image.load_img(sys.argv[2], grayscale=False, color_mode="rgb",target_size=(64,64), interpolation="nearest")

@@ -1,36 +1,54 @@
 import './sendImage.css';
 import Drawer from '../Items/Drawer';
 import axios from 'axios';
+import { requirePropFactory } from '@mui/material';
+import * as tf from "@tensorflow/tfjs";
+
 
 export default function SendImage(){
 
-  // function submitForm(e){
-  //   e.preventDefault();
 
-  //   axios.post('http://localhost:8080/sendimg', recwalletaddr,
-  //   {
-  //     headers: {
-  //             'Content-Type': 'application/json'
-  //               }
-  //   }).then(response=>{
-  //     console.log(response);
-  //   });
-  // }
+  async function encode(){
+    const MODEL_URL_1 = "http://127.0.0.1:8081/modelEncrypter.json";
+    const gantImage1 = document.getElementById('gant1');
+    const gantImage2= document.getElementById('gant2');
+    let gantTensor1 = tf.image.resizeBilinear(tf.browser.fromPixels(gantImage1).div(255.0), [64,64]);
+    let gantTensor2 = tf.image.resizeBilinear(tf.browser.fromPixels(gantImage2).div(255.0), [64,64]);
+    try{
+    const model = await tf.loadLayersModel(MODEL_URL_1);
+    let val = model.predict([gantTensor1.reshape([1,64,64,3]),gantTensor2.reshape([1,64,64,3])]);
+    const canvas = document.createElement('canvas');
+    val = tf.image.resizeBilinear(val.reshape([64,64,3]),[200,200]);
+    canvas.width = val.shape.width
+    canvas.height = val.shape.height
+    await tf.browser.toPixels(val, canvas);
+    let b64 = canvas.toDataURL().split(';base64,')[1];
+    console.log(b64);
+
+    }catch(err){
+      console.log(err);
+    }
+    
+    //send b64 to server
+
+
+  }
 
   function uploadImage(e){
-   let imageObj={};
-     let imageFormObj=new FormData();
-     imageFormObj.append("imageName","multer-image-"+Date.now());
-      imageFormObj.append("imageData",e.target.files[0]);
-      imageFormObj.append("recwadress",document.getElementById('recwadress').value);
-      console.log(e.target.files[0]);
-      axios.post('http://localhost:8080/sendimg',imageFormObj).then(response=>{
-            console.log(response.data);
-          });
+   encode();
+  //  let imageObj={};
+  //    let imageFormObj=new FormData();
+  //    imageFormObj.append("imageName","multer-image-"+Date.now());
+  //     imageFormObj.append("imageData",e.target.files[0]);
+  //     imageFormObj.append("recwadress",document.getElementById('recwadress').value);
+  //     console.log(e.target.files[0]);
+  //     axios.post('http://localhost:8080/sendimg',imageFormObj).then(response=>{
+  //           console.log(response.data);
+  //         });
   }
 
     let userWallet=sessionStorage.getItem('walletAdress');
-console.log(userWallet);
+    console.log(userWallet);
 
 
     return(
@@ -58,8 +76,11 @@ console.log(userWallet);
     <div class="col-sm-12">
       <input type="file" id="userType" name="imageData" onChange={(e)=>uploadImage(e)}/>
     </div>
+  
   </div>
   <br/>
+  <img src={require('./cover.jpg')} id="gant1" hidden/>
+   <img src={require('./secret.jpg')} id="gant2" hidden/>
   <button type="submit" class="btn btn-success">SUBMIT</button>
     </form>
   </div>

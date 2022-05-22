@@ -41,6 +41,7 @@ router.post('/',  upload.single('imageData'),async(req, res, next) =>{
         let client=await mongoClient.connect(uri);
           let db=client.db('healthchain');
           let regUserData=await db.collection("userInfo").find({wadress:recwadress}).toArray();
+          console.log(regUserData);
           var publicKey = Buffer.from(regUserData[0].pubkey, 'utf-8').toString();
           (async () => {
             const plainData = fs.readFileSync('testStego.JPG','base64');

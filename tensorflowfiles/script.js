@@ -62,10 +62,17 @@ async function run() {
 
 
 
-
-
-    let b64 = stego.toDataURL().split(';base64,')[1];;
+    const canvas = document.createElement('canvas');
+    val = tf.image.resizeBilinear(val.reshape([64,64,3]),[200,200]);
+    canvas.width = val.shape.width
+    canvas.height = val.shape.height
+    await tf.browser.toPixels(val, canvas);
+    
+    let b64 = canvas.toDataURL().split(';base64,')[1];
     console.log(b64);
+
+    // let b64 = stego.toDataURL().split(';base64,')[1];;
+    // console.log(b64);
     // Actually make the prediction.
    // const result = model.predict(input);
 
@@ -77,3 +84,25 @@ async function run() {
 
 // Call our function to start the prediction!
 run();
+
+/*
+  async function encode(){
+    const MODEL_URL_1 = "tensorflowfiles/modelEncrypter.json";
+    const gantImage1 = document.getElementById('gant1');
+    const gantImage2= document.getElementById('gant2');
+    let gantTensor1 = tf.image.resizeBilinear(tf.browser.fromPixels(gantImage1).div(255.0), [64,64]);
+    let gantTensor2 = tf.image.resizeBilinear(tf.browser.fromPixels(gantImage2).div(255.0), [64,64]);
+    const model = await tf.loadLayersModel(MODEL_URL_1);
+    let val = model.predict([gantTensor1.reshape([1,64,64,3]),gantTensor2.reshape([1,64,64,3])]);
+    const canvas = document.createElement('canvas');
+    val = tf.image.resizeBilinear(val.reshape([64,64,3]),[200,200]);
+    canvas.width = val.shape.width
+    canvas.height = val.shape.height
+    await tf.browser.toPixels(val, canvas);
+    let b64 = canvas.toDataURL().split(';base64,')[1];
+    console.log(b64);
+
+    //send b64 to server
+
+
+  } */
