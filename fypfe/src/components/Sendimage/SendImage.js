@@ -25,12 +25,15 @@ export default function SendImage(){
     canvas.height = val.shape.height
     await tf.browser.toPixels(val, canvas);
     let b64 = canvas.toDataURL().split(';base64,')[1];
-    console.log(b64);
-
+    let rec = document.getElementById("recwadress").value;
+    axios.post('http://localhost:8080/sendimg', {"b64":b64, "recwadress": rec}).then(response=>{
+      console.log(response.data)});
+    //console.log(b64);
     }catch(err){
       console.log(err);
     }
     
+
     //send b64 to server
 
   }
