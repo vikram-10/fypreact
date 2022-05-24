@@ -25,8 +25,10 @@ export default function RecieveImage(){
     
   let gantTensor1 = null;
   let gantTensor2 = null;
+
   async function encode(){
-    const MODEL_URL_1 = "http://127.0.0.1:8081/modelEncrypter.json";
+    const MODEL_URL_1 = "http://127.0.0.1:8081/modelDecrypter.json";
+
 
     gantTensor1 = tf.image.resizeBilinear(gantTensor1.div(255.0), [64,64]);
     gantTensor2 = tf.image.resizeBilinear(gantTensor2.div(255.0), [64,64]);
@@ -53,17 +55,45 @@ export default function RecieveImage(){
   }
 
 
-  function uploadprivatekey(e){
+  async function uploadprivatekey(e){
     // const im = new Image()
+    const MODEL_URL_1 = "http://127.0.0.1:8081/modelDecrypter.json";
+    const decrypter = await tf.loadLayersModel(MODEL_URL_1);
     var fr = new FileReader();
-    fr.onload = function () {
+    fr.onload = async function () {
         console.log("Privatekey:",fr.result);
         console.log(document.getElementById('fileHash').value);
-        axios.post('http://localhost:8080/recvimg', {"filehash":document.getElementById('fileHash').value, "pkey": fr.result}).then(response=>{
-        console.log(response.data)});
-        // console.log(fr.result);
+        const canvas = document.createElement('canvas');
+        var secret = null;
+        axios.post('http://localhost:8080/recvimg', {"filehash":document.getElementById('fileHash').value, "pkey": fr.result}).then(response=>   
+        {
+        console.log(response.data)
+        const im = new Image();
+        im.src = response.data;
+        im.onload = async () => {
+          gantTensor2 = tf.image.resizeBilinear(tf.browser.fromPixels(im).div(255.0), [64,64]);
+          var secret = decrypter.predict([gantTensor2.reshape([1,64,64,3])]);
+          console.log(secret);
+  
+          secret = tf.image.resizeBilinear(secret.reshape([64,64,3]),[200,200]);
+          canvas.width = secret.shape.width
+          canvas.height = secret.shape.height
+          await tf.browser.toPixels(secret, canvas);
+          let b64 = canvas.toDataURL();
+          console.log(b64);
+          document.getElementById("secret").href = b64;
+          alert("Secret Can be Downloaded");
+
+        }
+        });
+
+             // console.log(fr.result);
     }
     fr.readAsText(e.target.files[0]);
+
+    // console.log(gantTensor2.shape);
+    // console.log(secret);
+
     // im.onload = () => {
     //   gantTensor1= tf.browser.fromPixels(im);
     // }
@@ -130,6 +160,7 @@ export default function RecieveImage(){
   <br/>
   {/* <img src={require('./cover.jpg')} id="gant1" hidden/>
    <img src={require('./secret.jpg')} id="gant2" hidden/> */}
+  <a download="secret.png" id="secret" href="data:image/png;base64,asdasd...">Download</a>
   <button type="submit" class="btn btn-success">SUBMIT</button>
     </form>
   </div>

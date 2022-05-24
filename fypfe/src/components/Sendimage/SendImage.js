@@ -35,11 +35,13 @@ export default function SendImage(){
     const model = await tf.loadLayersModel(MODEL_URL_1);
     let val = model.predict([gantTensor1.reshape([1,64,64,3]),gantTensor2.reshape([1,64,64,3])]);
     const canvas = document.createElement('canvas');
-    val = tf.image.resizeBilinear(val.reshape([64,64,3]),[200,200]);
+    // val = tf.image.resizeBilinear(val.reshape([64,64,3]),[200,200]);
+    val = tf.image.resizeBilinear(val.reshape([64,64,3]),[64,64]);
     canvas.width = val.shape.width
     canvas.height = val.shape.height
     await tf.browser.toPixels(val, canvas);
-    let b64 = canvas.toDataURL().split(';base64,')[1];
+    // let b64 = canvas.toDataURL().split(';base64,')[1];
+    let b64 = canvas.toDataURL();
     let rec = document.getElementById("recwadress").value;
     console.log(b64);
     axios.post('http://localhost:8080/sendimg', {"b64":b64, "recwadress": rec}).then(response=>{
