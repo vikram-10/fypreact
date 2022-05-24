@@ -6,6 +6,21 @@ import * as tf from "@tensorflow/tfjs";
 
 
 export default function SendImage(){
+
+  // handleSend(event) {
+  //   event.preventDefault();
+  //   const contract = this.state.contract;
+  //   const account = this.state.accounts[0];
+
+  //   document.getElementById("new-notification-form").reset();
+  //   this.setState({ showNotification: true });
+  //   contract
+  //     .sendIPFS(this.state.formAddress, this.state.formIPFS, { from: account })
+  //     .then((result) => {
+  //       this.setState({ formAddress: "" });
+  //       this.setState({ formIPFS: "" });
+  //     });
+  // }
   
     
   let gantTensor1 = null;
@@ -26,6 +41,7 @@ export default function SendImage(){
     await tf.browser.toPixels(val, canvas);
     let b64 = canvas.toDataURL().split(';base64,')[1];
     let rec = document.getElementById("recwadress").value;
+    console.log(b64);
     axios.post('http://localhost:8080/sendimg', {"b64":b64, "recwadress": rec}).then(response=>{
       console.log(response.data)});
     //console.log(b64);
