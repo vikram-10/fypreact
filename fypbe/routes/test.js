@@ -17,13 +17,13 @@ router.post('/', async(req, res, next) =>{
 
 
   try{ 
-    const pKey = fs.readFileSync('./private.key', "utf-8");
+    // const pKey = fs.readFileSync('./private.key', "utf-8");
         var fileC = null;
         var filehash = req.body.filehash;
+        var pKey = Buffer.from(req.body.pkey, 'utf-8').toString();
         const privateKey = (await openpgp.key.readArmored([pKey]))
         .keys[0];
 
-        // var pKey = Buffer.from(req.body.pkey, 'utf-8').toString();
         // var pKey=req.body.pkey;
         ipfs.files.get(filehash, async function (err, files) {
             fileC = files[0].content.toString('utf-8');
@@ -38,11 +38,11 @@ router.post('/', async(req, res, next) =>{
               privateKeys: [privateKey]
             });
 
-            fs.writeFile("decrypted.txt", decrypted.data, 'utf-8',function(err) {
-              if(err)console.log(err);
-              else console.log(`Image is Decrypted Successfully`);
-
-        })
+            // fs.writeFile("decrypted.txt", decrypted.data, 'utf-8',function(err) {
+            //   if(err)console.log(err);
+            //   else console.log(`Image is Decrypted Successfully`);
+          // })
+          res.send(decrypted.data);
        
 
         })
