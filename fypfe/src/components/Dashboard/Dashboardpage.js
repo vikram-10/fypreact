@@ -1,6 +1,6 @@
 import './Dashboardpage.css';
 import Drawer from '../Items/Drawer';
-import HeaderBar from '../Home/HeaderBar';
+import DashboardHeader from '../DashboardHeader/Dashboardheader';
 import {Routes, Route} from 'react-router-dom';
 import SendImage from '../Sendimage/SendImage';
 import {useState} from 'react';
@@ -25,7 +25,7 @@ function Registerpage(){
 
 return(
         <>
-<Drawer/>
+<DashboardHeader/>
 <Routes>
 <Route path='/send-image' element={ <SendImage/> } />
 </Routes>

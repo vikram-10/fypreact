@@ -3,6 +3,7 @@ import Drawer from '../Items/Drawer';
 import axios from 'axios';
 import { requirePropFactory } from '@mui/material';
 import * as tf from "@tensorflow/tfjs";
+import DashboardHeader from '../DashboardHeader/Dashboardheader';
 
 
 export default function SendImage(){
@@ -45,7 +46,10 @@ export default function SendImage(){
     let rec = document.getElementById("recwadress").value;
     console.log(b64);
     axios.post('http://localhost:8080/sendimg', {"b64":b64, "recwadress": rec}).then(response=>{
-      console.log(response.data)});
+      console.log(response.data)
+      alert(response.data.hash);   
+    });
+     
     //console.log(b64);
     }catch(err){
       console.log(err);
@@ -100,7 +104,7 @@ export default function SendImage(){
 
     return(
         <>
-        <Drawer/>
+<DashboardHeader/>
 <div className="card cardDesign">
   <div className="card-body">
     <h6 className="card-subtitle mb-2 text-muted cardTitleDesign">Send Image</h6>
