@@ -19,7 +19,12 @@ function Registerpage(){
         console.log(data);
         axios.post('http://localhost:8080/userinfo',data).then(response=>{
                 console.log(response.data);
-                setUserName(response.data.userName);
+                // if(response.data.userName=='Doctor'){
+                //         setUserName(response.data.userName);       
+                // }
+                // else{
+                        setUserName(response.data.userName);
+                // }
                 setUserType(response.data.userType);
               });
 
@@ -32,8 +37,8 @@ return(
 <div className="card cardDesignDashboard">
   <div className="card-body">
     <h6 className="card-subtitle mb-2 text-muted cardTitleDesign">Hello {userName}! 👋</h6>
-<div>
-    Your user Specification Type is a : {userType}    
+<div className='cardText'>
+    Your user Specification Type is a : <br/>{userType=='Doctor'? <div className='userDisplay'>{userType} 👨‍⚕️</div>: <div className='userDisplay'>{userType} 👦</div>}     
 </div>
   </div>
 </div>
