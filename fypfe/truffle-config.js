@@ -11,7 +11,7 @@ const path = require("path");
   }
 };*/
 module.exports = {
-  contracts_build_directory: "./client/src",
+  contracts_build_directory: "./src/components/Sendimage",
   networks: {
     development: {
       host: "127.0.0.1",

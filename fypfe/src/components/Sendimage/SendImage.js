@@ -4,7 +4,9 @@ import axios from 'axios';
 import { requirePropFactory } from '@mui/material';
 import * as tf from "@tensorflow/tfjs";
 import DashboardHeader from '../DashboardHeader/Dashboardheader';
-
+import IPFSInboxContract from "./IPFSInbox.json";
+import getWeb3 from "./getWeb3";
+import truffleContract from "truffle-contract";
 
 export default function SendImage(){
 
@@ -27,6 +29,7 @@ export default function SendImage(){
   let gantTensor1 = null;
   let gantTensor2 = null;
   async function encode(){
+    var filehash = null;
     const MODEL_URL_1 = "http://127.0.0.1:8081/modelEncrypter.json";
 
     gantTensor1 = tf.image.resizeBilinear(gantTensor1.div(255.0), [64,64]);
@@ -34,6 +37,13 @@ export default function SendImage(){
 
     try{
     const model = await tf.loadLayersModel(MODEL_URL_1);
+    console.log(model);
+    const web3 = await getWeb3();
+    console.log(web3);
+    const contract = truffleContract(IPFSInboxContract);
+    contract.setProvider(web3.currentProvider);
+    const instance = await contract.deployed();
+    console.log(instance);
     let val = model.predict([gantTensor1.reshape([1,64,64,3]),gantTensor2.reshape([1,64,64,3])]);
     const canvas = document.createElement('canvas');
     // val = tf.image.resizeBilinear(val.reshape([64,64,3]),[200,200]);
@@ -46,8 +56,10 @@ export default function SendImage(){
     let rec = document.getElementById("recwadress").value;
     console.log(b64);
     axios.post('http://localhost:8080/sendimg', {"b64":b64, "recwadress": rec}).then(response=>{
-      console.log(response.data)
-      alert(response.data.hash);   
+      console.log(response.data);
+      filehash = response.data.hash;
+      instance.sendIPFS(rec, filehash, { from: userWallet });
+      //alert(response.data.hash);   
     });
      
     //console.log(b64);

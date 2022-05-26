@@ -8,8 +8,8 @@ const mongo = require('mongodb');
 let mongoClient = mongo.MongoClient;
 let cors=require('cors');
 
-//const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
-const ipfs = ipfsAPI();
+const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
+//const ipfs = ipfsAPI();
 const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
   
 router.post('/', async(req, res, next) =>{

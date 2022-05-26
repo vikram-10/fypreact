@@ -4,6 +4,9 @@ import axios from 'axios';
 import { requirePropFactory } from '@mui/material';
 import * as tf from "@tensorflow/tfjs";
 import DashboardHeader from '../DashboardHeader/Dashboardheader';
+import IPFSInboxContract from "../Sendimage/IPFSInbox.json";
+import getWeb3 from "../Sendimage/getWeb3";
+import truffleContract from "truffle-contract";
 
 
 export default function RecieveImage(){
@@ -53,6 +56,21 @@ export default function RecieveImage(){
 
     //send b64 to server
 
+  }
+  
+    async function recieveNotif(e){
+    e.preventDefault();
+    const web3 = await getWeb3();
+    console.log(web3);
+    const contract = truffleContract(IPFSInboxContract);
+    contract.setProvider(web3.currentProvider);
+    const instance = await contract.deployed();
+
+    instance.inboxResponse().on("data", (result) => {
+       document.getElementById("fileHash").value = result.args[0];
+    });
+
+    instance.checkInbox({ from: sessionStorage.getItem('walletAdress') });
   }
 
 
@@ -162,6 +180,7 @@ export default function RecieveImage(){
   {/* <img src={require('./cover.jpg')} id="gant1" hidden/>
    <img src={require('./secret.jpg')} id="gant2" hidden/> */}
   <a download="secret.png" id="secret" href="data:image/png;base64,asdasd...">Download</a>
+    <button onClick={(e)=>recieveNotif(e)} class="btn btn-primary">Recieve</button>
   <button type="submit" class="btn btn-success">SUBMIT</button>
     </form>
   </div>
