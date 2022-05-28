@@ -8,8 +8,8 @@ const mongo = require('mongodb');
 let mongoClient = mongo.MongoClient;
 let cors=require('cors');
 
-const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'});
-//const ipfs = ipfsAPI();
+//const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'});
+const ipfs = ipfsAPI();
 const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
   
 router.post('/', async(req, res, next) =>{
@@ -20,6 +20,13 @@ router.post('/', async(req, res, next) =>{
     // const pKey = fs.readFileSync('./private.key', "utf-8");
         var fileC = null;
         var filehash = req.body.filehash;
+        var fromAddress = req.body.fromA;
+        var toAddress = req.body.toA;
+        var fileDet = {"fromA": req.body.fromA, "toA": req.body.toA, "filehash": req.body.filehash};
+        //console.log(req.body);
+        let client=await mongoClient.connect(uri);
+        let db=client.db('healthchain');
+        let regUserData=await db.collection("fileDetails").insertOne(fileDet);
         var pKey = Buffer.from(req.body.pkey, 'utf-8').toString();
         const privateKey = (await openpgp.key.readArmored([pKey]))
         .keys[0];

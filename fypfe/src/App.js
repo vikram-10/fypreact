@@ -12,6 +12,7 @@ import ProtectedRoute from './components/Items/ProtectedRoute';
 import SendImage from './components/Sendimage/SendImage';
 import RecieveImage from './components/RecieveImage/RecieveImage';
 import Requests from './components/Requests/Requests';
+import Recievedtable from './components/RecievedTable/Recievedtable';
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path='dashboard/requests' element={ <Requests/> } />
         <Route path='dashboard/send-image' element={ <SendImage/> } />
         <Route path='dashboard/recieved-images' element={ <RecieveImage/> } />
+        <Route path='dashboard/recieved-table' element={ <Recievedtable/> } />
         {/* <ProtectedRoute path="/dashboard" component={Dashboard} auth={false}/> */}
       </Routes>
     </div>      

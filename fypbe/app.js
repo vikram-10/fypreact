@@ -13,6 +13,7 @@ var reguser=require('./routes/reguser');
 var sendimg=require('./routes/sendimg');
 var userInfo=require('./routes/userinfo');
 var recvImg=require('./routes/test');
+var getDetails=require('./routes/getdetails');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/sendimg', sendimg);
 app.use('/userinfo', userInfo);
 app.use('/uploads', express.static('uploads'));
 app.use('/recvimg',recvImg);
+app.use('/getdetails',getDetails);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

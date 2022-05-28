@@ -30,6 +30,7 @@ export default function SendImage(){
   let gantTensor2 = null;
   async function encode(){
     var filehash = null;
+    var sendContent = null;
     const MODEL_URL_1 = "http://127.0.0.1:8081/modelEncrypter.json";
 
     gantTensor1 = tf.image.resizeBilinear(gantTensor1.div(255.0), [64,64]);
@@ -58,7 +59,9 @@ export default function SendImage(){
     axios.post('http://localhost:8080/sendimg', {"b64":b64, "recwadress": rec}).then(response=>{
       console.log(response.data);
       filehash = response.data.hash;
-      instance.sendIPFS(rec, filehash, { from: userWallet });
+      sendContent = filehash + ";" + userWallet;
+
+      instance.sendIPFS(rec, sendContent, { from: userWallet });
       //alert(response.data.hash);   
     });
      

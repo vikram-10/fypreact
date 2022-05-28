@@ -29,6 +29,7 @@ export default function RecieveImage(){
     
   let gantTensor1 = null;
   let gantTensor2 = null;
+  var fromaddress = null;  
 
   async function encode(){
     const MODEL_URL_1 = "http://127.0.0.1:8081/modelDecrypter.json";
@@ -67,7 +68,11 @@ export default function RecieveImage(){
     const instance = await contract.deployed();
 
     instance.inboxResponse().on("data", (result) => {
-       document.getElementById("fileHash").value = result.args[0];
+       var array = result.args[0].split(";");
+       fromaddress = array[1]
+       //document.getElementById("fileHash").value = result.args[0];
+       document.getElementById("fileHash").value = array[0];
+
     });
 
     instance.checkInbox({ from: sessionStorage.getItem('walletAdress') });
@@ -84,7 +89,7 @@ export default function RecieveImage(){
         console.log(document.getElementById('fileHash').value);
         const canvas = document.createElement('canvas');
         var secret = null;
-        axios.post('http://localhost:8080/recvimg', {"filehash":document.getElementById('fileHash').value, "pkey": fr.result}).then(response=>   
+        axios.post('http://localhost:8080/recvimg', {"filehash":document.getElementById('fileHash').value, "pkey": fr.result, "fromA" : fromaddress, "toA" : sessionStorage.getItem('walletAdress')}).then(response=>   
         {
         console.log(response.data)
         const im = new Image();
