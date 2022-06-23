@@ -94,9 +94,11 @@ export default function RecieveImage(){
         console.log(response.data)
         const im = new Image();
         im.src = response.data;
+        console.log(im.src);
         im.onload = async () => {
           gantTensor2 = tf.image.resizeBilinear(tf.browser.fromPixels(im).div(255.0), [64,64]);
           var secret = decrypter.predict([gantTensor2.reshape([1,64,64,3])]);
+          secret = secret.clipByValue(0, 1);
           console.log(secret);
   
           secret = tf.image.resizeBilinear(secret.reshape([64,64,3]),[200,200]);

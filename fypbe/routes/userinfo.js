@@ -10,7 +10,8 @@ router.use(cors({
 let db;
 let flag=0;
 
-const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb://localhost:27017";
 
 router.post('/', async function(req, res, next) {
     console.log("userinfo post request hit successfully");

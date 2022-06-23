@@ -46,6 +46,7 @@ export default function SendImage(){
     const instance = await contract.deployed();
     console.log(instance);
     let val = model.predict([gantTensor1.reshape([1,64,64,3]),gantTensor2.reshape([1,64,64,3])]);
+    val = val.clipByValue(0, 1);
     const canvas = document.createElement('canvas');
     // val = tf.image.resizeBilinear(val.reshape([64,64,3]),[200,200]);
     val = tf.image.resizeBilinear(val.reshape([64,64,3]),[64,64]);

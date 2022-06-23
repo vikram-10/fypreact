@@ -1,7 +1,10 @@
 import './Registerpage.css';
 import axios from 'axios';
+import { Link,useNavigate} from 'react-router-dom';
 
 function Registerpage(){
+
+  const navigate=useNavigate();
   
 async function sendData(){
   let userData={
@@ -32,7 +35,8 @@ async function sendData(){
       
       // Start file download.
       download("private.key",response.data);
-      alert("Inserted Successfully");
+      alert("User Registered Successfully");
+      navigate('/');
     }).catch(err => {
       console.log(err, err.response);
     });

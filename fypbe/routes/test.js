@@ -10,7 +10,8 @@ let cors=require('cors');
 
 //const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'});
 const ipfs = ipfsAPI();
-const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb://localhost:27017";
   
 router.post('/', async(req, res, next) =>{
 

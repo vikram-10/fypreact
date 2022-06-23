@@ -14,7 +14,8 @@ router.use(cors({
     origin: '*'
 }));
 
-const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const uri = "mongodb+srv://vikram10:vikram2000@cluster0.0rf1v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb://localhost:27017";
 
 
 /* GET home page. */
