@@ -13,7 +13,7 @@ import SendImage from './components/Sendimage/SendImage';
 import RecieveImage from './components/RecieveImage/RecieveImage';
 import Requests from './components/Requests/Requests';
 import Recievedtable from './components/RecievedTable/Recievedtable';
-
+import DecodeImage from './components/DecodeImage/DecodeImage';
 
 
 function App() {
@@ -30,6 +30,7 @@ function App() {
         <Route path='dashboard/send-image' element={ <SendImage/> } />
         <Route path='dashboard/recieved-images' element={ <RecieveImage/> } />
         <Route path='dashboard/recieved-table' element={ <Recievedtable/> } />
+        <Route path='dashboard/decode-image' element={ <DecodeImage/> } />
         {/* <ProtectedRoute path="/dashboard" component={Dashboard} auth={false}/> */}
       </Routes>
     </div>      

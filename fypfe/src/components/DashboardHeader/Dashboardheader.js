@@ -93,6 +93,7 @@ export default function HeaderBar(){
 <div className='headerItems'>
     <span className="fa-solid fa-briefcase-medical medicalIcon"/>
     <span className='brandName'><Link to='/' style={{textDecoration:'none',color:'white'}}>HealthChain</Link></span>
+	<Link to='/dashboard/decode-image'><span className='buttonProperties1'>Decode Image</span></Link>
 	<Link to='/dashboard/recieved-table'><span className='buttonProperties1'>Recieved Table</span></Link>
     <Link to='/dashboard/recieved-images'><span className='buttonProperties1'>Recieve Image</span></Link>
     <Link to='/dashboard/send-image'><span className='buttonProperties1'>Send Image</span></Link>
