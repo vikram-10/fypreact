@@ -75,7 +75,7 @@
   "sourceMap": "58:1234:0:-;;;469:23;8:9:-1;5:2;;;30:1;27;20:12;5:2;469:23:0;58:1234;;;;;;",
   "deployedSourceMap": "58:1234:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;58:1234:0;;;;;;;;;;;;;;;;;;;;;;;;985:305;;;:::i;:::-;;637:210;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;637:210:0;;;;;;;;;;;;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;637:210:0;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;637:210:0;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;637:210:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;637:210:0;;;;;;;;;;;;;;;:::i;:::-;;985:305;1036:23;1062:9;:21;1072:10;1062:21;;;;;;;;;;;;;;;1036:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1123:1;1102:9;1096:23;:28;1093:191;;;1145:28;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1093:191;;;1204:26;;;;;;;;;;;;:9;:21;1214:10;1204:21;;;;;;;;;;;;;;;:26;;;;;;;;;;;;:::i;:::-;;1249:24;1263:9;1249:24;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;1249:24:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1093:191;985:305;:::o;637:210::-;714:9;:19;724:8;714:19;;;;;;;;;;;;;;;273:122;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;315:23;348:7;315:41;;388:1;367:10;:17;:22;358:32;;;;;;788:9;766;:19;776:8;766:19;;;;;;;;;;;;;;;:31;;;;;;;;;;;;:::i;:::-;;811:29;820:9;831:8;811:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;811:29:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;637:210;;;;:::o;58:1234::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.23;\ncontract IPFSInbox {\n    // Structures\n    mapping (address => string) ipfsInbox;\n    // Events\n    event ipfsSent(string _ipfsHash, address _address);\n    event inboxResponse(string response);\n    // Modifiers\n    modifier notFull (string memory _string) {bytes memory stringTest =  bytes(_string); require (stringTest.length == 0); _;}\n    // An empty constructor that creates an instance of the contract\n    constructor() public {}\n    // A function that takes in the receiver's address and the\n    // IPFS address. Places the IPFS address in the receiver's\n    // inbox.\n    function sendIPFS(address _address, string memory _ipfsHash)\n        notFull(ipfsInbox[_address])\n        public\n    {   \n       ipfsInbox[_address] = _ipfsHash;\n       emit ipfsSent(_ipfsHash, _address);\n    }\n    \n    // A function that checks your inbox and empties it afterwards.\n    // Returns an address if there is one, or \"Empty Inbox\"\n    function checkInbox()\n        public\n    {\n        string memory ipfs_hash = ipfsInbox[msg.sender];\n        if(bytes(ipfs_hash).length == 0) {\n            emit inboxResponse(\"Empty Inbox\");\n        } else {\n            ipfsInbox[msg.sender] = \"\";\n            emit inboxResponse(ipfs_hash);\n        }\n    }\n}",
-  "sourcePath": "/home/vikram/Desktop/fypreact/fypfe/contracts/IPFSInbox.sol",
+  "sourcePath": "/home/guru2804/Desktop/fypreact/fypfe/contracts/IPFSInbox.sol",
   "ast": {
     "absolutePath": "project:/contracts/IPFSInbox.sol",
     "exportedSymbols": {
@@ -2717,10 +2717,16 @@
       "links": {},
       "address": "0x6f3bc7608dB7c1819CAb9B4484DBb3DdA7291BC2",
       "transactionHash": "0x414f649f6807e31f666cf509713db1756d4f6f1b97cff7cd54ee2c5752c6b658"
+    },
+    "1656171289491": {
+      "events": {},
+      "links": {},
+      "address": "0xF37595156d221536f379Ba2F1a161Be43319c219",
+      "transactionHash": "0x1b9db7a839ee3cb4c6e686e1b25df87263c734741d6c44a65edc4558c35a9412"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-06-09T06:15:39.913Z",
+  "updatedAt": "2022-06-25T15:35:13.966Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

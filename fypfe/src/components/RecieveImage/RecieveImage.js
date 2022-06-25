@@ -101,7 +101,7 @@ export default function RecieveImage(){
           secret = secret.clipByValue(0, 1);
           console.log(secret);
   
-          secret = tf.image.resizeBilinear(secret.reshape([64,64,3]),[200,200]);
+          secret = tf.image.resizeBilinear(gantTensor2.reshape([64,64,3]),[200,200]);
           canvas.width = secret.shape.width
           canvas.height = secret.shape.height
           await tf.browser.toPixels(secret, canvas);

@@ -77,6 +77,42 @@ export default function DecodeImage(){
 
     instance.checkInbox({ from: sessionStorage.getItem('walletAdress') });
   }
+  
+  
+  
+  async function decode(e){
+
+          const MODEL_URL_1 = "http://127.0.0.1:8081/modelDecrypter.json";
+          const decrypter = await tf.loadLayersModel(MODEL_URL_1);
+          var fr = new FileReader();
+             const im = new Image()
+	    var fr = new FileReader();
+	    fr.onload = function () {
+		im.src = fr.result;
+	    }
+	    fr.readAsDataURL(e.target.files[0]);
+	    im.onload = async () => {
+	    const canvas = document.createElement('canvas');
+	      gantTensor2 = tf.image.resizeBilinear(tf.browser.fromPixels(im).div(255.0), [64,64]);
+	      var secret = decrypter.predict([gantTensor2.reshape([1,64,64,3])]);
+          secret = secret.clipByValue(0, 1);
+          console.log(secret);
+  
+          secret = tf.image.resizeBilinear(secret.reshape([64,64,3]),[200,200]);
+          canvas.width = secret.shape.width
+          canvas.height = secret.shape.height
+          await tf.browser.toPixels(secret, canvas);
+          let b64 = canvas.toDataURL();
+          console.log(b64);
+          document.getElementById("secret").href = b64;
+          alert("Secret Can be Downloaded");
+
+	      
+	      
+	    }
+
+
+}
 
 
   async function uploadprivatekey(e){
@@ -167,19 +203,11 @@ export default function DecodeImage(){
     <label for="exampleInputEmail1">Upload Stego:</label>
     <label for="inputPassword" class="col-sm-2 col-form-label"></label>
     <div class="col-sm-12">
-      <input type="file" name="uploadStego" onChange={(e)=>uploadprivatekey(e)}/>
+      <input type="file" name="uploadStego" onChange={(e)=>decode(e)}/>
+      <a download="secret.png" id="secret" href="data:image/png;base64,asdasd...">Download</a>
       {/* <input type="file" name="secretImg" onChange={(e)=>uploadSecret(e)}/> */}
     </div>
     </div>
-  </div>
-  <div class="form-group row">
-  <label for="exampleInputEmail1">Private Key Upload</label>
-    <label for="inputPassword" class="col-sm-2 col-form-label"></label>
-    <div class="col-sm-12">
-      <input type="file" name="privateKey" onChange={(e)=>uploadprivatekey(e)}/>
-      {/* <input type="file" name="secretImg" onChange={(e)=>uploadSecret(e)}/> */}
-    </div>
-  
   </div>
   <br/>
   {/* <img src={require('./cover.jpg')} id="gant1" hidden/>
